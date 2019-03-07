@@ -11,7 +11,7 @@ namespace Library.Controllers
       return View();
     }
 
-    [HttpGet("/librarian")]
+    [HttpGet("/librarians")]
     public ActionResult Librarian()
     {
       return View();
