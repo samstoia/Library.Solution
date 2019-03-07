@@ -166,7 +166,39 @@ namespace Library.Models
       return newPatron;
     }
 
+    public void Edit(string newName, string newAddress, string newPhone)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"UPDATE patrons SET patron_name = @patronName, address = @patronAddress, phone = @patronPhone where id = @patronId;";
+      MySqlParameter patronNameParameter = new MySqlParameter();
+      patronNameParameter.ParameterName = "@patronName";
+      patronNameParameter.Value = newName;
+      cmd.Parameters.Add(patronNameParameter);
+      MySqlParameter patronAddressParameter = new MySqlParameter();
+      patronAddressParameter.ParameterName = "@patronAddress";
+      patronAddressParameter.Value = newAddress;
+      cmd.Parameters.Add(patronAddressParameter);
+      MySqlParameter patronPhoneParameter = new MySqlParameter();
+      patronPhoneParameter.ParameterName = "@patronPhone";
+      patronPhoneParameter.Value = newPhone;
+      cmd.Parameters.Add(patronPhoneParameter);
+      MySqlParameter patronIdParameter = new MySqlParameter();
+      patronIdParameter.ParameterName = "@patronId";
+      patronIdParameter.Value = this._id;
+      cmd.Parameters.Add(patronIdParameter);
+      cmd.ExecuteNonQuery();
+      _patron_name = newName;
+      _address = newAddress;
+      _phone = newPhone;
 
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
   }
 }
 

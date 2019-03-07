@@ -1,0 +1,10 @@
+@using Library.Models;
+
+<h1> Book Details: </h1>
+<h2> Title: @Model.GetTitle()</h2>
+
+<h4> Author: (logic for getting author will go here)</h4>
+
+<p><a href="/books/@Model.GetBookId()/edit">Edit Book</a></p>
+<p><a href="/books/@Model.GetBookId()/delete">Delete Book</a></p>
+<p><a href="/books/">Back to book list</a></p>

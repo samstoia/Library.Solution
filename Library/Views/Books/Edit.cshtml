@@ -1,0 +1,16 @@
+<h1>Edit Book</h1>
+<hr>
+
+<h2>Edit @Model.GetTitle()</h2>
+
+<form action="/books/@Model.GetBookId()/edit" method="post">
+  <label for="title">Title:</label>
+  <input type="text" id="title" name="title" placeholder="@Model.GetTitle()">
+
+  <!-- <label for="author">Author:</label>
+  <input type="text" id="author" name="author" placeholder="@Model.GetTitle()"> -->
+
+
+  <button type="submit">Edit</button>
+</form>
+<h4><a href="/books/@Model.GetBookId()">Return to previous page</a></h4>

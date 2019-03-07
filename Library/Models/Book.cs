@@ -127,5 +127,46 @@ namespace Library.Models
       return newBook;
 
     }
+
+    public void Delete()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM books WHERE id = @bookId;";
+      MySqlParameter bookIdParameter = new MySqlParameter();
+      bookIdParameter.ParameterName = "@bookId";
+      bookIdParameter.Value = this._bookId;
+      cmd.Parameters.Add(bookIdParameter);
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public void Edit(string newTitle)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"UPDATE books SET title = @bookTitle WHERE id = @bookId;";
+      MySqlParameter bookTitleParameter = new MySqlParameter();
+      bookTitleParameter.ParameterName = "@bookTitle";
+      bookTitleParameter.Value = newTitle;
+      cmd.Parameters.Add(bookTitleParameter);
+      MySqlParameter bookIdParameter = new MySqlParameter();
+      bookIdParameter.ParameterName = "@bookId";
+      bookIdParameter.Value = this._bookId;
+      cmd.Parameters.Add(bookIdParameter);
+      cmd.ExecuteNonQuery();
+      _title = newTitle;
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
   }
 }

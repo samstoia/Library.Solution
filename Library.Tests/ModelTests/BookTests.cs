@@ -88,5 +88,16 @@ namespace Library.Tests
       //Assert
       Assert.AreEqual(testBook, foundBook);
     }
+
+    [TestMethod]
+    public void Delete()
+    {
+      Book testBook = new Book("test");
+      testBook.Save();
+      testBook.Delete();
+      List<Book> bookList = new List<Book>{testBook};
+      List<Book> testList = Book.GetAll();
+      Assert.AreNotEqual(bookList, testList);
+    }
   }
 }

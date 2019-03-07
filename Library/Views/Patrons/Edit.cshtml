@@ -1,0 +1,21 @@
+@using Library.Models;
+
+<h1>Edit Patron Details</h1>
+<hr>
+
+<h2>Edit @Model.GetPatronName()</h2>
+
+<form action="/patrons/@Model.GetPatronId()/edit" method="post">
+  <label for="name">Name: </label>
+  <input type="text" id="name" name="name" placeholder="@Model.GetPatronName()" required>
+<br>
+  <label for="address">Address: </label>
+  <input type="text" id="address" name="address" placeholder="@Model.GetPatronAddress()" required>
+<br>
+  <label for="phone">Phone Number: </label>
+  <input type="text" id="phone" name="phone" placeholder="@Model.GetPatronPhone()" required>
+<br>
+
+  <button type="submit">Edit</button>
+</form>
+<h4><a href="/patrons/@Model.GetPatronId()">Return to previous page</a></h4>

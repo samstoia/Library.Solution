@@ -1,0 +1,14 @@
+@using Library.Models;
+
+<h1> Patron Details: </h1>
+<h2> Name: @Model.GetPatronName()</h2>
+
+<h4> Address: @Model.GetPatronAddress()</h4>
+
+<h4> Phone Number: @Model.GetPatronPhone()</h4>
+
+
+
+<p><a href="/patrons/@Model.GetPatronId()/edit">Edit Patron Details</a></p>
+<p><a href="/patrons/@Model.GetPatronId()/delete">Delete Patron from System</a></p>
+<p><a href="/patrons/">Back to patron list</a></p>
