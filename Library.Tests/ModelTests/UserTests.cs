@@ -112,5 +112,23 @@ namespace Library.Tests
       CollectionAssert.AreEqual(newList, result);
     }
 
+    [TestMethod]
+    public void Find_ReturnsCorrectUserFromDatabase_User()
+    {
+      User testUser = new User("test", "test", "test");
+      testUser.Save();
+
+      //Act
+      User foundUser= User.Find(testUser.GetUserId());
+
+      //Assert
+      Assert.AreEqual(testUser, foundUser);
+    }
+    [TestMethod]
+    public void Delete_DeletesUserFromDatabase_UserList()
+    {
+      User testUser = new User("test", "test" "test")
+      testUser.Save()
+    }
   }
 }

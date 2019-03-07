@@ -132,5 +132,56 @@ namespace Library.Models
         return (userNameEquality && userAddressEquality && userPhoneEquality && UserIdEquality);
       }
     }
+
+
+    public static User Find(int id)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM users WHERE id = (@searchId);";
+      MySqlParameter searchId = new MySqlParameter();
+      searchId.ParameterName = "@searchId";
+      searchId.Value = id;
+      cmd.Parameters.Add(searchId);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int userId = 0;
+      string user_name = "";
+      string address = "";
+      string phone = "";
+      while(rdr.Read())
+      {
+        user_name = rdr.GetString(0);
+        address = rdr.GetString(1);
+        phone = rdr.GetString(2);
+        userId = rdr.GetInt32(3);
+      }
+      User newUser = new User(user_name, address, phone, userId);
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return newUser;
+    }
+    public bool Delete()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM users WHERE id = @userId;";
+      MySqlParameter userIdParameter = new MySqlParameter();
+      userIdParameter.ParameterName = "@userId";
+      userIdParameter.Value = this.GetUserId();
+      cmd.Parameters.Add(userIdParameter);
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return true;
+    }
+
   }
 }
