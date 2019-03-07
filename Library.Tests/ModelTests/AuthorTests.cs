@@ -77,5 +77,19 @@ namespace Library.Tests
       CollectionAssert.AreEqual(newList, result);
 
     }
+
+    [TestMethod]
+    public void Find_ReturnsCorrectAuthorFromDatabase_Author()
+    {
+      Author testAuthor = new Author("test");
+      testAuthor.Save();
+
+      //Act
+      Author foundAuthor= Author.Find(testAuthor.GetAuthorId());
+
+      //Assert
+      Assert.AreEqual(testAuthor, foundAuthor);
+    }
+
   }
 }

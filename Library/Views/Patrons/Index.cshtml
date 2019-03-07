@@ -1,0 +1,21 @@
+<h1>Patrons Portal</h1>
+<hr />
+<h2>Existing Patrons: </h2>
+
+
+@if (Model.Count != 0)
+{
+  <ul>
+    @foreach (var patron in Model)
+    {
+      <li><a href='/patrons/@patron.GetPatronId()'>@patron.GetPatronName()</a></li>
+    }
+  </ul>
+}
+else
+{
+  <p>No Patrons have been added yet.</p>
+}
+
+<h4><a href="/patrons/new">Add new patron</a></h4>
+<h4><a href="/">Return home</a></h4>

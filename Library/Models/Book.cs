@@ -100,5 +100,32 @@ namespace Library.Models
         return (bookIdEquality && bookNameEquality);
       }
     }
+    public static Book Find(int id)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM books where id = (@searchId);";
+      MySqlParameter searchId = new MySqlParameter();
+      searchId.ParameterName = "@searchId";
+      searchId.Value = id;
+      cmd.Parameters.Add(searchId);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int bookId = 0;
+      string title = "";
+      while (rdr.Read())
+      {
+        title = rdr.GetString(0);
+        bookId = rdr.GetInt32(1);
+      }
+      Book newBook = new Book(title, bookId);
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return newBook;
+
+    }
   }
 }

@@ -75,5 +75,18 @@ namespace Library.Tests
       CollectionAssert.AreEqual(newList, result);
 
     }
+
+    [TestMethod]
+    public void Find_ReturnsCorrectBookFromDatabase_Book()
+    {
+      Book testBook = new Book("test");
+      testBook.Save();
+
+      //Act
+      Book foundBook= Book.Find(testBook.GetBookId());
+
+      //Assert
+      Assert.AreEqual(testBook, foundBook);
+    }
   }
 }

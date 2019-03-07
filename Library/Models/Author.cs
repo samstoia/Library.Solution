@@ -100,6 +100,32 @@ namespace Library.Models
         return (authorIdEquality && authorNameEquality);
       }
     }
+    public static Author Find(int id)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM authors WHERE id = (@searchId);";
+      MySqlParameter searchId = new MySqlParameter();
+      searchId.ParameterName = "@searchId";
+      searchId.Value = id;
+      cmd.Parameters.Add(searchId);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int authorId = 0;
+      string author_name = "";
+      while(rdr.Read())
+      {
+        author_name = rdr.GetString(0);
+        authorId = rdr.GetInt32(1);
+      }
+      Author newAuthor = new Author(author_name, authorId);
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return newAuthor;
+    }
 
 
 
