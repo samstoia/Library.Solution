@@ -1,10 +1,31 @@
 @using Library.Models;
 
 <h1> Book Details: </h1>
-<h2> Title: @Model.GetTitle()</h2>
+<h2> Title: @Model["book"].GetTitle()</h2>
 
-<h4> Author: (logic for getting author will go here)</h4>
+@if (@Model ["bookAuthors"].Count != 0)
+{
+  <h4>Authors: </h4>
+  <ul>
+  @foreach (var author in @Model["bookAuthors"])
+  {
+    <li>@author.GetAuthorName()</li>
+  }
+  </ul>
+}
 
-<p><a href="/books/@Model.GetBookId()/edit">Edit Book</a></p>
-<p><a href="/books/@Model.GetBookId()/delete">Delete Book</a></p>
+<h4>Add author for this book</h4>
+<form action='/books/@Model["book"].GetBookId()/authors/new' method='post'>
+  <label for='authorId' >Select Author</label>
+  <select id='authorId' name='authorId' type='text'>
+  @foreach (var author in @Model["allAuthors"])
+  {
+    <option value='@author.GetAuthorId()'>@author.GetAuthorName()</option>
+  }
+  </select>
+  <button type='submit'>Add Author</button>
+</form>
+
+<p><a href="/books/@Model["book"].GetBookId()/edit">Edit Book</a></p>
+<p><a href="/books/@Model["book"].GetBookId()/delete">Delete Book</a></p>
 <p><a href="/books/">Back to book list</a></p>

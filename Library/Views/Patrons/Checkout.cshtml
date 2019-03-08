@@ -1,0 +1,22 @@
+@if (Model.Count != 0)
+{
+  <h3>Checkout List</h3>
+  <ul>
+    @foreach (var book in Model["patronBooks"])
+    {
+      <li><a href='/books/@book.GetBookId()'>@book.GetTitle()</a></li>
+    }
+  </ul>
+}
+else
+{
+  <p>No books have been checked out.</p>
+}
+
+<h2> Check Out a book</h2>
+<h3> Available books </h3>
+
+@foreach (var book in Model["availableBooks"])
+{
+  <p><a href='/books/@book.GetBookId()'>@book.GetTitle()</a></p>
+}

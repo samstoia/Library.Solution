@@ -1,0 +1,13 @@
+<h1>Edit Author</h1>
+<hr>
+
+<h2>Edit @Model.GetAuthorName()</h2>
+
+<form action="/authors/@Model.GetAuthorId()/edit" method="post">
+  <label for="name">Author Name:</label>
+  <input type="text" id="name" name="name" placeholder="@Model.GetAuthorName()">
+
+
+  <button type="submit">Edit</button>
+</form>
+<h4><a href="/authors/@Model.GetAuthorId()">Return to previous page</a></h4>

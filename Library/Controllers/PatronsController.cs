@@ -24,9 +24,9 @@ namespace Library.Controllers
     [HttpPost("/patrons")]
     public ActionResult Create(string patron_name, string address, string phone)
     {
-        Patron newPatron = new Patron(patron_name, address, phone);
-        newPatron.Save();
-        return RedirectToAction("Index");
+      Patron newPatron = new Patron(patron_name, address, phone);
+      newPatron.Save();
+      return RedirectToAction("Index");
     }
     [HttpGet("/patrons/{patronId}")]
     public ActionResult Show(int patronId)
@@ -47,6 +47,17 @@ namespace Library.Controllers
       Patron newPatron = Patron.Find(patronId);
       newPatron.Edit(name, address, phone);
       return RedirectToAction("Index");
+    }
+
+    [HttpGet("/patrons/{patronId}/checkout")]
+    public ActionResult Checkout(int patronId)
+    {
+      Dictionary<string, object> model = new Dictionary<string, object>{};
+      List<Book> patronBooks = Patron.GetCheckouts(patronId);
+      List<Book> availableBooks = Book.GetAvailable();
+      model.Add("patronBooks", patronBooks);
+      model.Add("availableBooks", availableBooks);
+      return View(model);
     }
   }
 }

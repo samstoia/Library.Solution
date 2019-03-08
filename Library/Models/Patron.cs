@@ -199,6 +199,54 @@ namespace Library.Models
         conn.Dispose();
       }
     }
+    public void Checkout(int bookId)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"UPDATE copies SET patron_id = @patronId, due_date = NOW() + INTERVAL 14 DAY
+      WHERE book_id = @bookId AND copy_num = (SELECT MIN(copy_num) FROM copies WHERE book_id = @bookId);";
+      MySqlParameter bookIdParameter = new MySqlParameter();
+      bookIdParameter.ParameterName = "@bookId";
+      bookIdParameter.Value = bookId;
+      cmd.Parameters.Add(bookIdParameter);
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+    public static List<Book> GetCheckouts(int patronId)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT books.* FROM books WHERE book_id IN (SELECT book_id FROM copies WHERE patron_id = @patronId);";
+      MySqlParameter patronIdParameter = new MySqlParameter();
+      patronIdParameter.ParameterName = "@patronId";
+      patronIdParameter.Value = patronId;
+      cmd.Parameters.Add(patronIdParameter);
+      List<Book> allBooks = new List<Book>{};
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int bookId = 0;
+      string bookTitle = "";
+      while (rdr.Read())
+      {
+        bookTitle = rdr.GetString(0);
+        bookId = rdr.GetInt32(1);
+        Book newBook = new Book(bookTitle, bookId);
+        allBooks.Add(newBook);
+      }
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+
+      return allBooks;
+    }
   }
 }
 

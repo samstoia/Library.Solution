@@ -31,8 +31,14 @@ namespace Library.Controllers
     [HttpGet("/books/{bookId}")]
     public ActionResult Show(int bookId)
     {
+      Dictionary<string, object> model = new Dictionary<string, object>{};
       Book newBook = Book.Find(bookId);
-      return View(newBook);
+      List<Author> bookAuthors = newBook.GetAuthors();
+      List<Author> allAuthors = Author.GetAll();
+      model.Add("book", newBook);
+      model.Add("bookAuthors", bookAuthors);
+      model.Add("allAuthors", allAuthors);
+      return View(model);
     }
     [HttpGet("/books/{bookId}/edit")]
     public ActionResult Edit(int bookId)
@@ -57,7 +63,23 @@ namespace Library.Controllers
       newBook.Delete();
       return RedirectToAction("Index");
     }
+    [HttpPost("/books/{bookId}/authors/new")]
+    public ActionResult AddAuthor(int bookId, int authorId)
+    {
+      Book newBook = Book.Find(bookId);
+      Author newAuthor = Author.Find(authorId);
+      newBook.AddAuthor(newAuthor);
+      return RedirectToAction("Show", new { bookId = bookId });
+    }
 
+    // [HttpPost("/books/{bookId}/authors/new")]
+    // public ActionResult AddAuthor(int authorId, int bookId)
+    // {
+    //   Author author = Author.Find(authorId);
+    //   Book book = Book.Find(bookId);
+    //   book.AddAuthor(author);
+    //   return RedirectToAction("Show", new {bookId = bookId});
+    // }
 
   }
 }
